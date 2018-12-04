@@ -1,5 +1,3 @@
-#include <SoftwareSerial.h> // software bluetooth serial
-
 // 모터드라이버 핀 설정 
 #define LeftA 5 
 #define LeftB 6 
@@ -7,19 +5,16 @@
 #define RightB 10 
  
 //bt settings
-#define BlueTx 12 
-#define BlueRx 11 
 
 #define Debug
  
-SoftwareSerial mySerial(BlueTx, BlueRx);  //시리얼 통신을 위한 객체선언
-
 char command; // input command 
  
 void setup() {
  // 시리얼 통신속도 설정
+  delay(8000);
   Serial.begin(9600);   
-  mySerial.begin(9600); 
+  Serial1.begin(9600); 
 
  // 모터드라이버 출력 설정
   pinMode(LeftA, OUTPUT);
@@ -31,9 +26,9 @@ void setup() {
 }
  
 void loop() {
-  while(mySerial.available())  //블루투스로 입력이 있으면
+  while(Serial1.available())  //블루투스로 입력이 있으면
   {
-     command = mySerial.read(); // 컨트롤러 리턴값을 저장
+     command = Serial1.read(); // 컨트롤러 리턴값을 저장
      #ifdef Debug
      Serial.print(command);
      #endif
@@ -93,7 +88,16 @@ void left(){
   #ifdef Debug
     Serial.println("left");
   #endif  
-
+  
+  analogWrite(LeftA, 0);              // 5번핀에 0
+  analogWrite(LeftB, 150);            // 6번핀에 150
+  analogWrite(RightA, 0);              // 9번핀에 0
+  analogWrite(RightB, 0);           // 10번핀에 150
+  delay(300);
+  analogWrite(LeftA, 0);              // 5번핀에 0
+  analogWrite(LeftB, 0);            // 6번핀에 150
+  analogWrite(RightA, 0);              // 9번핀에 0
+  analogWrite(RightB, 0);           // 10번핀에 150
 
 }
 
@@ -101,7 +105,15 @@ void right(){
   #ifdef Debug
     Serial.println("right");
   #endif  
-
+  analogWrite(LeftA, 0);              // 5번핀에 0
+  analogWrite(LeftB, 0);            // 6번핀에 150
+  analogWrite(RightA, 0);              // 9번핀에 0
+  analogWrite(RightB, 150);           // 10번핀에 150
+  delay(300);
+  analogWrite(LeftA, 0);              // 5번핀에 0
+  analogWrite(LeftB, 0);            // 6번핀에 150
+  analogWrite(RightA, 0);              // 9번핀에 0
+  analogWrite(RightB, 0);           // 10번핀에 150
 
 }
 
